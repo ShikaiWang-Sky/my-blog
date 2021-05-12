@@ -1,19 +1,47 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import Home from '../views/Home.vue'
+import Login from '../views/Login.vue'
+import BlogDetail from '../views/blog/BlogDetail.vue'
+import BlogEdit from '../views/blog/BlogEdit.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
+    name: 'Index',
+    redirect: { name: 'Blogs' }
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: '/login',
+    name: 'Login',
+    component: Login
+  },
+  {
+    path: '/blogs',
+    name: 'Blogs',
+    // 懒加载
+    component: () => import('../views/blog/Blogs.vue')
+  },
+  {
+    path: '/blog/add',
+    name: 'BlogAdd',
+    // 用meta规定了哪些页面需要auth, 访问meta.requireAuth
+    meta: {
+      requireAuth: true
+    },
+    component: BlogEdit
+  },
+  {
+    // 动态路由
+    path: '/blog/:blogId',
+    name: 'BlogDetail',
+    component: BlogDetail
+  },
+  {
+    path: '/blog/:blogId/edit',
+    name: 'BlogEdit',
+    meta: {
+      requireAuth: true
+    },
+    component: BlogEdit
   }
 ]
 
